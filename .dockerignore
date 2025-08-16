@@ -1,0 +1,12 @@
+
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.DS_Store
+venv/
+.venv/
+data/
+# Don't bake large local checkpoints unless you intend to
+# (you can choose to remove this line to force COPY of /model)
+model/*

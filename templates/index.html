@@ -1,0 +1,51 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Machine Translation Demo</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Machine Translation</h1>
+    <p class="subtitle">Enter text below and click Translate.</p>
+
+    {% if error %}
+      <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    <form id="form" method="POST" action="/translate">
+      <textarea name="text" id="text" rows="6" placeholder="Type your text here...">{{ input_text or "" }}</textarea>
+      <div class="buttons">
+        <button type="submit">Translate</button>
+        <button type="button" id="try-api">Try via JSON API</button>
+      </div>
+    </form>
+
+    {% if result %}
+      <h2>Translation</h2>
+      <div class="result">{{ result }}</div>
+    {% endif %}
+
+    <div class="footer">
+      <a href="/health" target="_blank">Health check</a>
+    </div>
+  </div>
+
+  <script>
+    // Optional: call JSON API with fetch
+    document.getElementById('try-api').addEventListener('click', async () => {
+      const text = document.getElementById('text').value;
+      const res = await fetch('/translate', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text})
+      });
+      const data = await res.json();
+      alert(res.ok ? ("Translation: " + data.translation) : ("Error: " + (data.error || res.status)));
+    });
+  </script>
+</body>
+</html>
